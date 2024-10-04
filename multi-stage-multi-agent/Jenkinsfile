@@ -5,6 +5,20 @@ pipeline {
       agent {
         docker { image 'maven:3.8.1-adoptopenjdk-11' }
       }
+stage('Checkout') {
+            steps {
+                // Checkout code from the repository
+                checkout scm
+            }
+        }
+        stage('List Files') {
+            steps {
+                // List files in the workspace to verify HelloWorld.java exists
+                sh 'ls -l'
+            }
+          
+        }
+ stage('buld'){
       steps {
         sh 'mvn --version'
       catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
@@ -14,7 +28,8 @@ pipeline {
                     '''
                 }
                 echo 'Back-end stage completed, moving to Front-end...'
-            }  
+            } 
+ }
     }
     stage('Front-end') {
       agent {
