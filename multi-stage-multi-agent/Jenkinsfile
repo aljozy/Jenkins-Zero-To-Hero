@@ -21,7 +21,7 @@ stage('Checkout') {
             }
           
         }
- stage('buld'){
+ stage('build'){
       steps {
         sh 'mvn --version'
       catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
