@@ -9,8 +9,8 @@ pipeline {
         sh 'mvn --version'
       catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     sh '''
-                        javac HelloWorld.java
-                        java HelloWorld
+                        javac ~/multi-stage-multi-agent/HelloWorld.java
+                        java ~/multi-stage-multi-agent/HelloWorld
                     '''
                 }
                 echo 'Back-end stage completed, moving to Front-end...'
