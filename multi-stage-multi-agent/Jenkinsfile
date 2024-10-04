@@ -1,44 +1,28 @@
 pipeline {
-    agent none
-    stages {
-      
-        
-    
-        stage('Back-end') {
-            agent {
-                docker { image 'maven:3.8.1-adoptopenjdk-11' }
-            }
-
-            stages {
-                stage('List Files') {
-                    steps {
-                        // List files in the workspace to verify HelloWorld.java exists
-                        sh 'ls -l'
-                    }
+  agent none
+  stages {
+    stage('Back-end') {
+      agent {
+        docker { image 'maven:3.8.1-adoptopenjdk-11' }
+      }
+      steps {
+        sh 'mvn --version'
+      catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    sh '''
+                        javac ~/multi-stage-multi-agent/HelloWorld.java
+                        java ~/multi-stage-multi-agent/HelloWorld
+                    '''
                 }
-                stage('Build') {
-                    steps {
-                        sh 'mvn --version'
-                        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                            sh '''
-                                javac HelloWorld.java
-                                java HelloWorld
-                            '''
-                        }
-                        echo 'Back-end stage completed, moving to Front-end...'
-                    }
-                }
-            }
-        }
-        
-        stage('Front-end') {
-            agent {
-                docker { image 'node:16-alpine' }
-            }
-            steps {
-                sh 'node --version'
-            }
-        }
+                echo 'Back-end stage completed, moving to Front-end...'
+            }  
     }
-}
+    stage('Front-end') {
+      agent {
+        docker { image 'node:16-alpine' }
+      }
+      steps {
+        sh 'node --version'
+      }
+    }
+  }
 }
