@@ -7,7 +7,11 @@ pipeline {
       }
       steps {
         sh 'mvn --version'
-      }
+        sh '''
+                    javac HelloWorld.java
+                    java HelloWorld
+                '''
+      }  
     }
     stage('Front-end') {
       agent {
