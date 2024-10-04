@@ -11,8 +11,8 @@ pipeline {
         echo 'files checking'
       catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     sh '''
-                        javac ~/multi-stage-multi-agent/HelloWorld.java
-                        java ~/multi-stage-multi-agent/HelloWorld
+                        javac multi-stage-multi-agent/HelloWorld.java
+                        java multi-stage-multi-agent/HelloWorld
                     '''
                 }
                 echo 'Back-end stage completed, moving to Front-end...'
